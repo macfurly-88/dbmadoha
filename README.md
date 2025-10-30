@@ -76,15 +76,11 @@ Guarda el diseño .mwb (diagrama) dentro de la carpeta /db.
 
 ⚙️ 3. Instalación del proyecto
 
-Abre una terminal en la carpeta principal del proyecto:
-
-cd C:\Users\macla\Escritorio\7\E-business\app
-
+Abre una terminal en la carpeta principal del proyecto
 
 Instala las dependencias ejecutando:
 
 npm install
-
 
 Si prefieres crear todo desde cero automáticamente, puedes ejecutar:
 
@@ -121,3 +117,4 @@ Nombre: Madoha
 Proyecto: MADOHA
 Materia: E-Business
 Fecha: Octubre 2025
+Git: https://github.com/macfurly-88/dbmadoha
