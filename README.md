@@ -114,29 +114,10 @@ Servidor corriendo en http://localhost:8080
 Abre tu navegador y entra a:
 👉 http://localhost:8080
 
-💾 5. Archivos y carpetas principales
-app/
-│
-├── db/
-│   ├── diseño.mwb
-│   └── script.sql
-│
-├── src/
-│   ├── controllers/
-│   ├── routes/
-│   ├── views/
-│   │   └── partials/
-│   └── public/
-│
-├── app.js
-├── create.bat
-├── package.json
-└── README.md
 
-👨‍💻 6. Autor
+👨‍💻 5. Autor
 
 Nombre: Madoha
-Proyecto: Aplicación de gestión de servicios de marketing
+Proyecto: MADOHA
 Materia: E-Business
-Profesor: ———
 Fecha: Octubre 2025
