@@ -1,8 +1,12 @@
 {
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-myconnection": "^1.0.4",
+    "express-session": "^1.18.2",
     "morgan": "^1.10.1",
+    "multer": "^2.0.2",
     "mysql": "^2.18.1",
     "nodemon": "^3.1.10"
   },
@@ -15,6 +19,5 @@
   },
   "author": "",
   "license": "ISC",
-  "keywords": [],
-  "devDependencies": {}
+  "keywords": []
 }

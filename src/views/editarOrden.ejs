@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Orden</title>
+  <style>
+    body { font-family: "Segoe UI", Arial, sans-serif; background: #f8f9fa; margin: 30px; color: #333; }
+    form { background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 600px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
+    input, select { padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+    button { background: #000; color: white; border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; align-self: flex-end; }
+    button:hover { background: #222; }
+    a.volver { background: #000; color: white; text-decoration: none; padding: 8px 14px; border-radius: 8px; text-align: center; display: block; margin-top: 20px; }
+    a.volver:hover { background: #333; }
+  </style>
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <h2 style="text-align:center;">Editar Orden</h2>
+
+  <form action="/ordenes/editar/<%= orden.id %>" method="post">
+    <label>Usuario</label>
+    <select name="usuario_id" required>
+      <% usuarios.forEach(u => { %>
+        <option value="<%= u.id %>" <%= orden.usuario_id === u.id ? 'selected' : '' %>><%= u.nombre %></option>
+      <% }) %>
+    </select>
+
+    <label>Servicio</label>
+    <select name="servicio_id" required>
+      <% servicios.forEach(s => { %>
+        <option value="<%= s.id %>" <%= orden.servicio_id === s.id ? 'selected' : '' %>><%= s.nombre %></option>
+      <% }) %>
+    </select>
+
+    <label>Fecha</label>
+    <input type="date" name="fecha" value="<%= orden.fecha.toISOString().split('T')[0] %>" required>
+
+    <label>Estado</label>
+    <select name="estado">
+      <option value="pendiente" <%= orden.estado === 'pendiente' ? 'selected' : '' %>>Pendiente</option>
+      <option value="en proceso" <%= orden.estado === 'en proceso' ? 'selected' : '' %>>En proceso</option>
+      <option value="completado" <%= orden.estado === 'completado' ? 'selected' : '' %>>Completado</option>
+    </select>
+
+    <button type="submit">Actualizar</button>
+  </form>
+
+  <a href="/ordenes/vista" class="volver">Volver</a>
+</body>
+</html>

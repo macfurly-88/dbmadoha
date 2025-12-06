@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Servicios</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 30px;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      color: #000000;
+      margin-bottom: 25px;
+    }
+    form {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: 0.2s;
+    }
+    input:focus {
+      border-color: #007bff;
+    }
+    button {
+      background: #000000;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #222;
+    }
+
+    .card {
+      margin: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .card-body {
+      text-align: center;
+    }
+
+    .precio {
+      font-weight: bold;
+      color: #000;
+      margin-top: 10px;
+    }
+
+    .duracion {
+      color: #666;
+    }
+
+    .botones a {
+      text-decoration: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      margin: 4px;
+      font-size: 14px;
+    }
+
+    .edit { background-color: #ffc107; }
+    .delete { background-color: #dc3545; }
+    .edit:hover { background-color: #d39e00; }
+    .delete:hover { background-color: #c82333; }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: rgba(0,0,0,0.6);
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <h2>Gestión de Servicios</h2>
+
+  <form action="/servicios" method="post" enctype="multipart/form-data">
+    <input type="text" name="nombre" placeholder="Nombre" required>
+    <input type="text" name="descripcion" placeholder="Descripción">
+    <input type="number" name="precio" placeholder="Precio" step="0.01" required>
+    <input type="number" name="duracion_dias" placeholder="Duración (días)" min="1" required>
+    <input type="file" name="imagenes" multiple accept="image/*">
+    <button type="submit">Agregar</button>
+  </form>
+
+  <div class="d-flex flex-wrap justify-content-center">
+    <% if (servicios.length === 0) { %>
+      <p>No hay servicios registrados.</p>
+    <% } else { %>
+      <% servicios.forEach(s => { %>
+        <div class="card" style="width: 18rem;">
+          <% 
+            const imgs = s.imagenes ? s.imagenes.split(',') : [];
+            const idCarrusel = `carrusel-${s.id}`;
+          %>
+          <% if (imgs.length > 0) { %>
+            <div id="<%= idCarrusel %>" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <% imgs.forEach((img, index) => { %>
+                  <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                    <img src="<%= img %>" class="d-block w-100" alt="Imagen servicio">
+                  </div>
+                <% }) %>
+              </div>
+              <% if (imgs.length > 1) { %>
+                <button class="carousel-control-prev" type="button" data-bs-target="#<%= idCarrusel %>" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#<%= idCarrusel %>" data-bs-slide="next">
+                  <span class="carousel-control-next-icon"></span>
+                </button>
+              <% } %>
+            </div>
+          <% } else { %>
+            <img src="/img/default.png" alt="Sin imagen" class="d-block w-100">
+          <% } %>
+
+          <div class="card-body">
+            <h5 class="card-title"><%= s.nombre %></h5>
+            <p class="card-text"><%= s.descripcion %></p>
+            <p class="precio">$<%= s.precio %></p>
+            <p class="duracion"><%= s.duracion_dias %> días</p>
+            <div class="botones">
+              <a href="/servicios/editar/<%= s.id %>" class="edit">Editar</a>
+              <a href="/servicios/eliminar/<%= s.id %>" class="delete" onclick="return confirm('¿Eliminar este servicio?')">Eliminar</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

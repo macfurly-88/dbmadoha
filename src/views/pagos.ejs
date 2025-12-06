@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Pagos</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 30px;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      color: #000;
+    }
+
+    form {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      background: #000;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    th {
+      background: #000;
+      color: white;
+    }
+
+    td a {
+      text-decoration: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    td a.edit { background-color: #ffc107; }
+    td a.delete { background-color: #dc3545; }
+  </style>
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <h2>Gestión de Pagos</h2>
+
+  <form action="/pagos" method="post">
+    <select name="orden_id" required>
+      <option value="">Selecciona orden</option>
+      <% ordenes.forEach(o => { %>
+        <option value="<%= o.id %>">Orden #<%= o.id %></option>
+      <% }) %>
+    </select>
+    <input type="number" step="0.01" name="monto" placeholder="Monto" required>
+    <input type="date" name="fecha_pago" required>
+    <select name="metodo_pago" required>
+      <option value="tarjeta">Tarjeta</option>
+      <option value="transferencia">Transferencia</option>
+      <option value="efectivo">Efectivo</option>
+    </select>
+    <button type="submit">Agregar</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Orden</th><th>Usuario</th><th>Servicio</th>
+        <th>Monto</th><th>Fecha</th><th>Método</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (pagos.length === 0) { %>
+        <tr><td colspan="8">No hay pagos registrados.</td></tr>
+      <% } else { %>
+        <% pagos.forEach(p => { %>
+          <tr>
+            <td><%= p.id %></td>
+            <td>#<%= p.orden_id %></td>
+            <td><%= p.usuario %></td>
+            <td><%= p.servicio %></td>
+            <td>$<%= p.monto %></td>
+            <td><%= p.fecha_pago.toISOString().split('T')[0] %></td>
+            <td><%= p.metodo_pago %></td>
+            <td>
+              <a href="/pagos/editar/<%= p.id %>" class="edit">Editar</a>
+              <a href="/pagos/eliminar/<%= p.id %>" class="delete" onclick="return confirm('¿Eliminar este pago?')">Eliminar</a>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Usuarios</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f8f9fa;
+        margin: 30px;
+        color: #333;
+      }
+
+      h2 {
+        text-align: center;
+        color: #000000;
+      }
+
+      form {
+        background: #ffffff;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      input, select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.2s;
+      }
+
+      input:focus {
+        border-color: #000000;
+      }
+
+      button {
+        background: #000000;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #222;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      th {
+        background: #000000;
+        color: white;
+      }
+
+      td a {
+        text-decoration: none;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      td a.edit {
+        background-color: #ffc107;
+      }
+
+      td a.delete {
+        background-color: #dc3545;
+      }
+
+      td a.edit:hover {
+        background-color: #d39e00;
+      }
+
+      td a.delete:hover {
+        background-color: #c82333;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h2>Gestión de Usuarios</h2>
+
+    <form action="/usuarios" method="post">
+      <input type="text" name="nombre" placeholder="Nombre" required>
+      <input type="email" name="correo" placeholder="Correo" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <input type="text" name="empresa" placeholder="Empresa">
+      <select name="rol">
+        <option value="cliente">Cliente</option>
+        <option value="admin">Admin</option>
+      </select>
+      <button type="submit">Agregar</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Empresa</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% usuarios.forEach(function(u) { %>
+          <tr>
+            <td><%= u.id %></td>
+            <td><%= u.nombre %></td>
+            <td><%= u.correo %></td>
+            <td><%= u.empresa ? u.empresa : '' %></td>
+            <td><%= u.rol %></td>
+            <td>
+              <a href="/usuarios/editar/<%= u.id %>" class="edit">Editar</a>
+              <a href="/usuarios/eliminar/<%= u.id %>" class="delete" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </body>
+</html>

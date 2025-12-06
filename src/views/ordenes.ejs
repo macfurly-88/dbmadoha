@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Órdenes</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 30px;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      color: #000;
+    }
+
+    form {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    button {
+      background: #000;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    th {
+      background: #000;
+      color: white;
+    }
+
+    td a {
+      text-decoration: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    td a.edit {
+      background-color: #ffc107;
+    }
+
+    td a.delete {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <h2>Gestión de Órdenes</h2>
+
+  <form action="/ordenes" method="post">
+    <select name="usuario_id" required>
+      <option value="">Selecciona usuario</option>
+      <% usuarios.forEach(u => { %>
+        <option value="<%= u.id %>"><%= u.nombre %></option>
+      <% }) %>
+    </select>
+
+    <select name="servicio_id" required>
+      <option value="">Selecciona servicio</option>
+      <% servicios.forEach(s => { %>
+        <option value="<%= s.id %>"><%= s.nombre %></option>
+      <% }) %>
+    </select>
+
+    <input type="date" name="fecha" required>
+    <select name="estado">
+      <option value="pendiente">Pendiente</option>
+      <option value="en proceso">En proceso</option>
+      <option value="completado">Completado</option>
+    </select>
+    <button type="submit">Agregar</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Usuario</th><th>Servicio</th><th>Fecha</th><th>Estado</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (ordenes.length === 0) { %>
+        <tr><td colspan="6">No hay órdenes registradas.</td></tr>
+      <% } else { %>
+        <% ordenes.forEach(o => { %>
+          <tr>
+            <td><%= o.id %></td>
+            <td><%= o.usuario %></td>
+            <td><%= o.servicio %></td>
+            <td><%= o.fecha.toISOString().split('T')[0] %></td>
+            <td><%= o.estado %></td>
+            <td>
+              <a href="/ordenes/editar/<%= o.id %>" class="edit">Editar</a>
+              <a href="/ordenes/eliminar/<%= o.id %>" class="delete" onclick="return confirm('¿Eliminar esta orden?')">Eliminar</a>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+</body>
+</html>

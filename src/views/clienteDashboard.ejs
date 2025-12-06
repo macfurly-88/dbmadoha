@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel del Cliente - Madoha</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      color: #333;
+    }
+
+    header {
+      background: #20232a;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    header img {
+      height: 45px;
+      border-radius: 8px;
+      background: white;
+      padding: 4px;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    nav a:hover {
+      color: #61dafb;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100vh - 80px);
+      border: none;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .logout {
+      color: #ff4d4d;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .logout:hover {
+      color: #ff7777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <img src="/img/logo.png" alt="Logo Madoha">
+    </div>
+    <nav>
+      <a href="/cliente/inicio" target="contenido"><i class="fa-solid fa-house"></i> Inicio</a>
+      <a href="/cliente/servicios" target="contenido"><i class="fa-solid fa-briefcase"></i> Servicios</a>
+      <a href="/cliente/carrito" target="contenido"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+      <a href="/cliente/ordenes" target="contenido"><i class="fa-solid fa-file-invoice"></i> Órdenes</a>
+      <a href="/logout" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Salir</a>
+    </nav>
+  </header>
+
+  <div class="content">
+    <iframe src="/cliente/inicio" name="contenido"></iframe>
+  </div>
+</body>
+</html>

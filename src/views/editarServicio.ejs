@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Servicio</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 30px;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      color: #000;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 700px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    h4 {
+      margin: 5px 0 0 5px;
+      color: #000;
+      font-size: 15px;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: #000;
+      box-shadow: 0 0 3px rgba(0,0,0,0.2);
+    }
+
+    .imagenes-actuales {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      justify-content: center;
+    }
+
+    .imagen-item {
+      position: relative;
+      display: inline-block;
+    }
+
+    .imagenes-actuales img {
+      width: 130px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .eliminar-imagen {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .eliminar-imagen:hover {
+      background: #b02a37;
+    }
+
+    button {
+      background: #000;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      align-self: flex-end;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #222;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    a.volver {
+      background: #000000;
+      color: white;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    a.volver:hover {
+      background: #000;
+    }
+
+    /* ✅ Mensaje de confirmación */
+    .mensaje {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 100;
+    }
+
+  </style>
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <h2>Editar Servicio</h2>
+
+  <form action="/servicios/editar/<%= servicio.id %>" method="post" enctype="multipart/form-data">
+    <h4>Nombre</h4>
+    <input type="text" name="nombre" value="<%= servicio.nombre %>" required>
+
+    <h4>Descripción</h4>
+    <input type="text" name="descripcion" value="<%= servicio.descripcion %>">
+
+    <h4>Precio</h4>
+    <input type="number" step="0.01" name="precio" value="<%= servicio.precio %>" required>
+
+    <h4>Duración (días)</h4>
+    <input type="number" name="duracion_dias" value="<%= servicio.duracion_dias %>" min="1" required>
+
+    <h4>Imágenes actuales</h4>
+    <div class="imagenes-actuales">
+      <% if (imagenes.length > 0) { %>
+        <% imagenes.forEach(img => { %>
+          <div class="imagen-item" id="img-<%= img.id %>">
+            <img src="<%= img.ruta_imagen %>" alt="Imagen del servicio">
+            <button type="button" class="eliminar-imagen" title="Eliminar imagen" onclick="eliminarImagen(<%= img.id %>)">X</button>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>No hay imágenes registradas.</p>
+      <% } %>
+    </div>
+
+    <h4>Agregar nuevas imágenes</h4>
+    <input type="file" name="imagenes" multiple accept="image/*">
+
+    <button type="submit">Actualizar</button>
+  </form>
+
+  <p>
+    <a href="/servicios/vista" class="volver">Volver</a>
+  </p>
+
+  <!-- ✅ Mensaje visual -->
+  <div id="mensaje" class="mensaje">✅ Imagen eliminada correctamente</div>
+
+  <script>
+    async function eliminarImagen(id) {
+      if (!confirm("¿Seguro que deseas eliminar esta imagen?")) return;
+
+      try {
+        const response = await fetch(`/servicios/eliminar-imagen/${id}`, {
+          method: 'POST'
+        });
+
+        if (response.ok) {
+          document.getElementById(`img-${id}`).remove(); // Elimina visualmente
+          mostrarMensaje();
+        } else {
+          alert("Error al eliminar imagen");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function mostrarMensaje() {
+      const msg = document.getElementById('mensaje');
+      msg.style.display = 'block';
+      setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    }
+  </script>
+</body>
+</html>

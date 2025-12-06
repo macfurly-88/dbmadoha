@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis Órdenes - Madoha</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 30px;
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      color: #000;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    th {
+      background: #000;
+      color: white;
+    }
+
+    .estado {
+      font-weight: bold;
+      border-radius: 8px;
+      padding: 4px 8px;
+      text-transform: capitalize;
+    }
+
+    .pendiente {
+      background: #ffc107;
+      color: #000;
+    }
+
+    .en-proceso {
+      background: #17a2b8;
+      color: white;
+    }
+
+    .completado {
+      background: #28a745;
+      color: white;
+    }
+
+    .sin-ordenes {
+      text-align: center;
+      font-style: italic;
+      margin-top: 40px;
+    }
+
+    .volver {
+      display: inline-block;
+      margin-top: 25px;
+      background: #000;
+      color: white;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .volver:hover {
+      background: #222;
+    }
+  </style>
+</head>
+<body>
+  <h2>Mis Órdenes</h2>
+
+  <% if (ordenes.length === 0) { %>
+    <p class="sin-ordenes">Aún no tienes órdenes registradas 🕒</p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th>ID Orden</th>
+          <th>Servicio</th>
+          <th>Precio</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% ordenes.forEach(o => { %>
+          <tr>
+            <td><%= o.id %></td>
+            <td><%= o.servicio %></td>
+            <td>$<%= o.precio %></td>
+            <td><%= new Date(o.fecha).toLocaleDateString() %></td>
+            <td>
+              <span class="estado <%= o.estado.replace(' ', '-') %>">
+                <%= o.estado %>
+              </span>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+
+  <div style="text-align:center;">
+    <a href="/cliente/inicio" class="volver">Volver al inicio</a>
+  </div>
+</body>
+</html>
